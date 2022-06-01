@@ -1,0 +1,107 @@
+//https://www.hackerrank.com/challenges/flatland-space-stations/problem?isFullScreen=true
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution 
+{
+    static int flatlandSpaceStations(int n, int[] c) 
+    {
+        Arrays.sort(c);
+        int count =0;int maxcount=0;
+        for(int i=0;i<n;i++)
+        {
+                  int maxlrange =0;int lessrange=0;int highrange=n-1;
+                  int maxhrange=n-1;int dummy =0;int dummyl=0;int dummyh=0;
+            for(int j=0;j<c.length;j++)
+            {
+                if(c[j] == i)
+                {
+                    dummy = 1;
+                    count=0;
+                    break;
+                }
+                else if (c[j] < i)
+                {
+                    dummyl=1;
+                    lessrange = c[j];
+                }
+                else if(c[j] > i)
+                {
+                    dummyh=1;
+                    highrange = c[j];
+                }
+                if(lessrange > maxlrange)
+                {
+                    maxlrange = lessrange;
+                }
+                if(highrange <= maxhrange)
+                {
+                    maxhrange = highrange;
+                }
+            }     
+              if(dummy == 0)
+              {
+                  if((dummyl == 1) && (dummyh==1))
+                  {
+                    if ( (i-maxlrange) < (maxhrange-i) )
+                    {
+                    count = i-maxlrange;
+                    }
+                    else
+                    {
+                    count = maxhrange-i;
+                    }
+                  }
+                  else if(dummyl == 0)
+                  {
+                      count = maxhrange-i;
+                  }
+                  else if(dummyh == 0)
+                  {
+                      count = i-maxlrange;
+                  }
+              }
+            if(count > maxcount)
+            {
+                maxcount = count;
+            }
+        }
+return maxcount;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nm = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nm[0]);
+
+        int m = Integer.parseInt(nm[1]);
+
+        int[] c = new int[m];
+
+        String[] cItems = scanner.nextLine().split(" ");
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int i = 0; i < m; i++) {
+            int cItem = Integer.parseInt(cItems[i]);
+            c[i] = cItem;
+        }
+
+        int result = flatlandSpaceStations(n, c);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
